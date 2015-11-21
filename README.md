@@ -23,6 +23,6 @@ Second, Open in Visual Studio 2015 and Build solution.
 Last, Run exe with `Html` and `TestCase` and `Sources` 
 
 # License
-Copyright (c) 2015 Ikeda Iori  
-Released MIT license
+Copyright (c) 2015 Iori Ikeda   
+This software is released under the MIT License, see LICENSE.txt.
 
