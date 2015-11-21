@@ -14,8 +14,9 @@ namespace HttpServer
         private Socket server;
         private ControlForm _ctrlForm;
         private bool state;
-        Thread thread1;
+        Thread thread;
         private string DefaultHtml = Environment.CurrentDirectory + @"\Html\index.html";
+        public Submissions submissionsManager = new Submissions();
 
         public HttpServer(IPAddress address, int port, ControlForm ctrlForm)
         {
@@ -37,8 +38,9 @@ namespace HttpServer
 
                 state = true;
 
-                thread1 = new Thread(Start);
-                thread1.Start();
+                thread = new Thread(Start);
+                thread.Start();
+                submissionsManager.JudgeStart();
             }
             catch (Exception Ex)
             {
@@ -69,8 +71,9 @@ namespace HttpServer
 
                 state = true;
 
-                thread1 = new Thread(Start);
-                thread1.Start();
+                thread = new Thread(Start);
+                thread.Start();
+                submissionsManager.JudgeStart();
             }
             catch (Exception Ex)
             {
@@ -84,9 +87,10 @@ namespace HttpServer
             // 要求待ち
                 while(state)
                 {
+                    Console.WriteLine("HTTPSERVER");
                     Socket client = server.Accept();
 
-                    Response response = new Response(client, DefaultHtml, true, _ctrlForm);
+                    Response response = new Response(client, DefaultHtml, true, _ctrlForm, submissionsManager);
                     response.Start();
                 }
         }
@@ -94,7 +98,7 @@ namespace HttpServer
         public void Stop()
         {
             state = false;
-            thread1.Abort();
+            thread.Abort();
         }
     }
 }

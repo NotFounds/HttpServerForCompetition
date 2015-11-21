@@ -19,18 +19,20 @@ namespace HttpServer
         private string logfile = "Access.log";
         private string indexfile = Environment.CurrentDirectory + @"\Html\index.html";
         private ControlForm _ctrlForm;
+        private Submissions submittionsManager;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="client">サーバーソケット</param>
         /// <param name="index">indexファイルパス</param>
-        public Response(Socket client, string index, ControlForm ctrlForm)
+        public Response(Socket client, string index, ControlForm ctrlForm, Submissions sub)
         {
             mClient = client;
             indexfile = index;
             isLog = false;
             _ctrlForm = ctrlForm;
+            submittionsManager = sub;
         }
 
         /// <summary>
@@ -39,12 +41,13 @@ namespace HttpServer
         /// <param name="client">サーバーソケット</param>
         /// <param name="index">indexファイルパス</param>
         /// <param name="log">logファイルを出力する場合はtrue, 出力しない場合はfalse</param>
-        public Response(Socket client, string index, bool log, ControlForm ctrlForm)
+        public Response(Socket client, string index, bool log, ControlForm ctrlForm, Submissions sub)
         {
             mClient = client;
             indexfile = index;
             isLog = log;
             _ctrlForm = ctrlForm;
+            submittionsManager = sub;
         }
 
         /// <summary>
@@ -53,13 +56,14 @@ namespace HttpServer
         /// <param name="client">サーバーソケット</param>
         /// <param name="index">indexファイルパス</param>
         /// <param name="log">logファイルのファイル名</param>
-        public Response(Socket client, string index, string log, ControlForm ctrlForm)
+        public Response(Socket client, string index, string log, ControlForm ctrlForm, Submissions sub)
         {
             mClient = client;
             indexfile = index;
             logfile = log;
             isLog = true;
             _ctrlForm = ctrlForm;
+            submittionsManager = sub;
         }
 
         /// <summary>
@@ -86,7 +90,6 @@ namespace HttpServer
                     return;
 
                 string message = Encoding.ASCII.GetString(buffer, 0, recvLen);
-
                 if (isLog)
                 {
                     Stream fs;
@@ -97,6 +100,7 @@ namespace HttpServer
                     }
                     fs.Close();
                 }
+
 
                 _ctrlForm.WriteLileLog_Thread(message);
 
@@ -134,9 +138,16 @@ namespace HttpServer
                         {
                             Action readText = () =>
                             {
-                                using (StreamReader sr = new StreamReader(path))
+                                if (Path.GetFileName(path).ToLower().StartsWith("submissions"))
                                 {
-                                    message = sr.ReadToEnd();
+                                    message = submittionsManager.getHTML();
+                                }
+                                else
+                                {
+                                    using (StreamReader sr = new StreamReader(path))
+                                    {
+                                        message = sr.ReadToEnd();
+                                    }
                                 }
 
                                 // バイナリエンコーディング
@@ -219,9 +230,18 @@ namespace HttpServer
                     }
                     else
                     {
-                        //message = "<title>404 Not Found</title>" + "<h1>404 Not Found</h1>";
-                        message = @"<meta http-equiv=""refresh"" content=""0;URL=NotFound.html"">";
-                        statusCode = "404 Not Found";
+                        if (message.IndexOf("GET /") >= 0)
+                        {
+                            using (StreamReader sr = new StreamReader(indexfile))
+                            {
+                                message = sr.ReadToEnd();
+                            }
+                        }
+                        else
+                        {
+                            message = @"<meta http-equiv=""refresh"" content=""0;URL=NotFound.html"">";
+                            statusCode = "404 Not Found";
+                        }
 
                         // バイナリエンコーディング
                         buffer = Encoding.UTF8.GetBytes(message);
@@ -242,16 +262,12 @@ namespace HttpServer
                     string playerid = bodys["playerid"];
                     string probid = bodys["probid"];
                     string answer = bodys["answer"];
-
-                    Encoding enc = Encoding.GetEncoding("UTF-8");
-                    string[] strLines = File.ReadAllLines("Submissions.txt", enc);
-                    int index = strLines.Length + 1;
+                    
+                    int index = Directory.EnumerateFiles(@"Sources\").Where<string>(x => x.EndsWith(".c") || x.EndsWith(".cpp") || x.EndsWith(".cs")).Count() + 1;
 
                     string filename = string.Format(@"Sources\{0:D4}", index);
                     DateTime t = DateTime.Now;
-
-                    Stream fs = OpenWorkfileWithRetry("Submissions.txt");
-
+                    
                     string writeStr = "";
 
                     switch (lang)
@@ -290,15 +306,8 @@ namespace HttpServer
                             break;
                     }
 
-                    // submissions.txtに書き込み
-                    using (fs)
-                    {
-                        fs.Seek(0, SeekOrigin.End);
-                        using (TextWriter tw = new StreamWriter(fs))
-                        {
-                            tw.WriteLine(writeStr);
-                        }
-                    }
+                    // Judgeに渡す
+                    submittionsManager.Submit(writeStr);
 
                     using (StreamWriter sw = new StreamWriter(filename, false))
                     {
@@ -322,7 +331,7 @@ namespace HttpServer
                     }
                     else
                     {
-                        message = "<title>404 Not Found</title>" + "<h1>Not Found</h1>";
+                        message = @"<meta http-equiv=""refresh"" content=""0;URL=NotFound.html"">";
                         statusCode = "404 Not Found";
                     }
 
@@ -334,7 +343,7 @@ namespace HttpServer
                 int contentLen = buffer.GetLength(0);
 
                 // HTTPヘッダー生成
-                String httpHeader = String.Format("HTTP/1.1 {0}\n" + "Content-type: {1}; charset=UTF-8\n" + "Content-length: {2}\n" + "\n", statusCode, getFileType, contentLen);
+                string httpHeader = string.Format("HTTP/1.1 {0}\n" + "Content-type: {1}; charset=UTF-8\n" + "Content-length: {2}\n" + "\n", statusCode, getFileType, contentLen);
 
                 byte[] httpHeaderBuffer = new byte[4096];
                 httpHeaderBuffer = Encoding.UTF8.GetBytes(httpHeader);
@@ -344,7 +353,7 @@ namespace HttpServer
                 mClient.Send(buffer);
 
             }
-            catch (System.Net.Sockets.SocketException e)
+            catch (SocketException e)
             {
                 if (isLog)
                 {
@@ -360,7 +369,7 @@ namespace HttpServer
                 mClient.Close();
             }
         }
-
+        
         // ファイルが使えるまで待ち、書き込む
         private Stream OpenWorkfileWithRetry(string fileName)
         {
@@ -393,6 +402,5 @@ namespace HttpServer
             }
             return null;
         }
-
     }
 }

@@ -15,7 +15,7 @@ namespace ExceptionLogger
                             "エラー", MessageBoxButtons.OK, 
                             MessageBoxIcon.Exclamation);   
          
-            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.StartupPath + @"\Error.log"))
+            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.StartupPath + @"\Error.log", true))
             {
                 sw.WriteLine("Error : " + DateTime.Now);
                 sw.WriteLine("----- Exceptions -----");

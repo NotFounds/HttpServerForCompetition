@@ -32,7 +32,7 @@ namespace HttpServer
         private void Form1_Load(object sender, EventArgs e)
         {
             ColorSet(0);
-            textBox3.Text = Environment.CurrentDirectory + @"\Html\index.html";
+            textBox3.Text = Environment.CurrentDirectory;
             Init();
         }
 
@@ -123,7 +123,7 @@ namespace HttpServer
 
             if (textBox3.Text != "")
             {
-                server = new HttpServer(ip, port, textBox3.Text + @"\index.txt", this);
+                server = new HttpServer(ip, port, textBox3.Text + @"\HTML\index.html", this);
             }
             else
             {
