@@ -1,6 +1,6 @@
 # HttpServerForCompetition
 + This Program is written by C# and Html, js, css...
-+ You can make a simple competition server.
++ You can make a simple competition server in LAN.
 
 # Feature
 + Port Setting
@@ -17,12 +17,11 @@
 + JavaScript
 + CSS
 
-# How to use 
+# How to use
 First, Clone this repository.   
 Second, Open in Visual Studio 2015 and Build solution.  
-Last, Run exe with `Html` and `TestCase` and `Sources` 
+Last, Run exe with `Html` and `TestCase` , `Sources`, `compile.bat`
 
 # License
 Copyright (c) 2015 Iori Ikeda   
 This software is released under the MIT License, see LICENSE.txt.
-
