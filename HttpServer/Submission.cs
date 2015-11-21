@@ -15,7 +15,7 @@ namespace HttpServer
         private string STARTUP_PATH = "";
         private string sourceFilePath = @"\Sources\";
         private string fileName = "Submissions.txt";
-        private string[] strLines;
+        private string[] strLines = new string[1];
         private string[] testCaseNum;
         private Thread JudgeThread;
 
@@ -392,6 +392,9 @@ namespace HttpServer
         // Html書き換え部分
         private List<string> readFile()
         {
+            if (strLines == null) return new List<string>();
+            if (strLines[0] == null) return new List<string>();
+
             List<string> result = new List<string>();
 
             int a = strLines.Length - 50;
