@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>提出フォーム</title>
+		
+		<link href="css/buttons.css" type="text/css" rel="stylesheet" />
+		<script type="text/javascript">
+			function submitCheck() 
+			{
+				if(document.submitForm.playerid.value == "")
+				{ 
+					// playeridの入力チェック
+					window.alert('Player ID を入力してください'); // 入力漏れがあれば警告ダイアログを表示
+					return false; // 送信中止
+				}
+				else if(document.submitForm.answer.value == "")
+				{
+					// answerの入力チェック
+					window.alert('Source Code を入力してください'); // 入力漏れがあれば警告ダイアログを表示
+					return false; // 送信中止
+				}
+				else
+				{
+					return true; // 送信実行
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div style="text-align:center">
+		<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="5" style="color:rgb(64,64,96)">提出フォーム
+		<br />
+		</font>
+		</div>
+		<form method="post" action="/SubmitAnswer" name="submitForm">
+			<h3>
+			<a name="TOC--"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color:rgb(64,64,96)">Player<br />
+			</font>
+			<hr />
+			<h3>
+			<input type="text" name="playerid" /><br />
+			<h3>
+			<a name="TOC--"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color:rgb(64,64,96)">Problem<br />
+			</font>
+			<hr />
+			<h3>
+			<select name="problemid" onchange="">
+				<option value="1">Problem1</option>
+				<option value="2">Problem2</option>
+				<option value="3">Problem3</option>
+				<option value="4">Problem4</option>
+			</select>
+			<br />
+			<h3>
+			<a name="TOC--"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color:rgb(64,64,96)">Langage<br />
+			</font>
+			<hr />
+			<h3>
+			<select name="language" onchange="">
+				<option value="1">C</option>
+				<option value="2">C++</option>
+				<option value="3">C#</option>
+			</select>
+			<br />
+			<h3>
+			<a name="TOC--"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color:rgb(64,64,96)">Source Code<br />
+			</font>
+			<hr />
+			<h3>
+			<textarea name="answer" cols="45" rows="20"></textarea><br />
+			<br />
+			<button class="btn" type="submit" onclick="return submitCheck();">Submit</button>
+			<button class="btn" onclick="location.href='index.html'" type="button">Top Page</button>
+			<button class="btn" onclick="location.href='Submissions.html'" type="button">Submissions</button>			
+		</form>
+	</body>
+</html>

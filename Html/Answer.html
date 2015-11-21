@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link href="css/prettify.css" type="text/css" rel="stylesheet" />
+		<script type="text/javascript" src="js/prettify.js"></script>
+		<title>Problem1-Answer</title>		 
+		<link href="css/buttons.css" type="text/css" rel="stylesheet" />
+	</head>		 
+	<body onload="prettyPrint()">
+		<div style="text-align: center;">
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="5" style="color: rgb(64, 64, 96);">Problem1 FizzBuzz - Answer<br>
+			</font>
+		</div>
+		<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="2" style="color: rgb(33, 33, 77);">
+		<h3>
+			<a name="TOC--"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color: rgb(64, 64, 96);">問題
+			</font>		 
+			<hr>
+		</h3>
+		「Fizz Buzz」と言われる数字を使ったゲームがあります。このゲームは1から順番に数字を一つずつ数え上げていき、<br>
+		3で割り切れる場合は「Fizz」、5で割り切れる場合は「Buzz」、両者で割り切れる場合は「FizzBuzz」と言います。<br>
+		あなたは100まで数え上げなければなりません。1から順に100までFizzBuzzを表示するプログラムを作成してください。<br><br>
+		<h3>
+			<a name="TOC--1"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color: rgb(64, 64, 96);">入力
+			</font>		 
+			<hr>
+		</h3>
+		入力はありません。<br><br>
+		<h3>
+			<a name="TOC--2"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color: rgb(64, 64, 96);">出力
+			</font>		 
+			<hr>
+		</h3>
+		1から100まで順番に数を表示します。<br>
+		その数が3で割り切れるなら「Fizz」<br>
+		5で割り切れるなら「Buzz」<br>
+		両方で割り切れるなら「FizzBuzz」と表示してください。<br><br>
+		<h3>
+			<a name="TOC--2"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color: rgb(64, 64, 96);">制約条件
+			</font>		 
+			<hr>
+		</h3>
+		改行を入れてください。<br>
+		FizzBuzzと表示するときは、FizzとBuzzの間にスペースは入れないでください。<br>
+		すべて半角英数で出力するようにしてください。<br>
+		実行時間は1000ms以内です。<br>
+		<br><br>
+		<h3>
+			<a name="TOC--4"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color: rgb(64, 64, 96);">出力例
+			</font>		 
+			<hr>
+		</h3>
+		1<br>
+		2<br>
+		Fizz<br>
+		4<br>
+		Buzz<br>
+		...<br><br>
+		
+  		<h3>
+			<a name="TOC--4"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color: rgb(64, 64, 96);">解法1
+			</font>		 
+			<hr>
+		</h3>
+		愚直に1から100まで標準出力を用いて出力する<br>
+		もちろんこれでもOKですが...<br>
+		もし、1000まで表示のような問題だったら大変ですので、次の解法<br>
+		<br>
+  		<h3>
+			<a name="TOC--4"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color: rgb(64, 64, 96);">解法2
+			</font>		 
+			<hr>
+		</h3>
+		For文もしくはWhile文等のループを用いて、1から100まで繰り返す<br>
+  		ループの中でIf文を用いて3で割り切れたら「Fizz」、5で割り切れたら「Buzz」<br>
+  		どちらでも割り切れたら「FizzBuzz」、どちらでも割り切れなかったら数字を出力<br>
+  		<br>
+		<br>
+  		<h3>
+			<a name="TOC--4"></a>
+			<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="4" style="color: rgb(64, 64, 96);">解法2のソースコード
+			</font>		 
+			<hr>
+		</h3>
+		<a name="TOC--4"></a>
+		<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="3" style="color: rgb(64, 64, 96);">C言語
+		</font>		
+		<br>
+<pre class="prettyprint linenums">
+#include &lt;stdio.h&gt;
+int main()
+{
+	int i;
+	for (i = 1; i &lt;= 100; i++)
+	{
+		 if (i % 15 == 0)
+		 {
+			printf("FizzBuzz\n");
+		 }
+		 else if (i % 3 == 0)
+		 {
+			printf("Fizz\n");
+		 }
+		 else if (i % 5 == 0)
+		 {
+			printf("Buzz\n");
+		 }
+		 else
+		 {
+			printf("%d\n", i);
+		 }
+	}
+	return 0;
+}
+</pre>
+<br>
+		<a name="TOC--4"></a>
+		<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="3" style="color: rgb(64, 64, 96);">C++
+		</font>		
+		<br>
+<pre class="prettyprint linenums">
+#include &lt;iostream&gt;
+using namepace std;
+int main()
+{
+	int i;
+	for (i = 1; i &lt;= 100; i++)
+	{
+		 if (i % 15 == 0)
+		 {
+			cout &lt;&lt; "FizzBuzz" &lt;&lt; endl;
+		 }
+		 else if (i % 3 == 0)
+		 {
+			cout &lt;&lt; "Fizz" &lt;&lt; endl;
+		 }
+		 else if (i % 5 == 0)
+		 {
+			cout &lt;&lt; "Buzz" &lt;&lt; endl;
+		 }
+		 else
+		 {
+			cout &lt;&lt; i &lt;&lt; endl;
+		 }
+	}
+	return 0;
+}
+</pre>
+<br>
+		<a name="TOC--4"></a>
+		<font face="Segoe UI,メイリオ,Meiryo,Verdana,Helvetica,ヒラギノ角ゴ Pro W,Hiragino Kaku Gothic Pro,MS Pゴシック" size="3" style="color: rgb(64, 64, 96);">C#
+		</font>		
+		<br>
+<pre class="prettyprint linenums">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+namespace Program
+{
+	class FizzBuzz
+	{
+		static void Main(string[] args)
+		{
+			int i;
+			for (i = 1; i &lt;= 100; i++)
+			{
+				 if (i % 15 == 0)
+				 {
+					Console.WriteLine("FizzBuzz");
+				 }
+				 else if (i % 3 == 0)
+				 {
+					Console.WriteLine("Fizz");
+				 }
+				 else if (i % 5 == 0)
+				 {
+					Console.WriteLine("Buzz");
+				 }
+				 else
+				 {
+					Console.WriteLine(i.ToString());
+				 }
+			}
+		}
+	}
+}
+</pre>
+		<br><br>
+		<button class="btn" onclick="location.href='index.html'" type="button">Top Page</button>	
+		<button class="btn" onclick="location.href='Submissions.html'" type="button">Submissions</button>
+		</font>
+	</body>
+</html>
