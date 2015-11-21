@@ -16,8 +16,8 @@ namespace HttpServer
         private Socket mClient;
 
         private bool isLog = false;
-        private string logfile = "access.log";
-        private string indexfile = @"\Html\index.html";
+        private string logfile = "Access.log";
+        private string indexfile = Environment.CurrentDirectory + @"\Html\index.html";
         private ControlForm _ctrlForm;
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace HttpServer
         /// </summary>
         public void Start()
         {
-            Thread thread1 = new Thread(RunReceive);
-            thread1.Start();
+            Thread thread = new Thread(RunReceive);
+            thread.Start();
         }
 
         /// <summary>
@@ -79,20 +79,23 @@ namespace HttpServer
             try
             {
                 // 要求受信
-                byte[] buffer = new byte[16384];
+                byte[] buffer = new byte[65535];
                 int recvLen = mClient.Receive(buffer);
 
                 if (recvLen <= 0)
                     return;
 
-                String message = Encoding.ASCII.GetString(buffer, 0, recvLen);
+                string message = Encoding.ASCII.GetString(buffer, 0, recvLen);
 
                 if (isLog)
                 {
-                    using (StreamWriter sw = new StreamWriter(OpenWorkfileWithRetry(logfile)))
+                    Stream fs;
+                    while ((fs = OpenWorkfileWithRetry(logfile)) == null) Thread.Sleep(50);
+                    using (StreamWriter sw = new StreamWriter(fs))
                     {
                         sw.WriteLine(message);
                     }
+                    fs.Close();
                 }
 
                 _ctrlForm.WriteLileLog_Thread(message);
@@ -216,7 +219,8 @@ namespace HttpServer
                     }
                     else
                     {
-                        message = "<title>404 Not Found</title>" + "<h1>404 Not Found</h1>";
+                        //message = "<title>404 Not Found</title>" + "<h1>404 Not Found</h1>";
+                        message = @"<meta http-equiv=""refresh"" content=""0;URL=NotFound.html"">";
                         statusCode = "404 Not Found";
 
                         // バイナリエンコーディング
@@ -362,6 +366,12 @@ namespace HttpServer
         {
             const int RetryCountMax = 20;
             const int RetryInterval = 30;
+
+            if (!File.Exists(fileName))
+            {
+                using (StreamWriter sw = new StreamWriter(fileName))
+                { }
+            }
 
             FileStream fs = null;
             for (int i = 0; i < RetryCountMax; i++)

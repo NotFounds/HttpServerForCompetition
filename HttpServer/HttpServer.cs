@@ -15,6 +15,8 @@ namespace HttpServer
         private ControlForm _ctrlForm;
         private bool state;
         Thread thread1;
+        private string DefaultHtml = Environment.CurrentDirectory + @"\Html\index.html";
+
         public HttpServer(IPAddress address, int port, ControlForm ctrlForm)
         {
             try
@@ -45,6 +47,38 @@ namespace HttpServer
             }
         }
 
+        public HttpServer(IPAddress address, int port, string HtmlPath, ControlForm ctrlForm)
+        {
+            try
+            {
+                DefaultHtml = HtmlPath;
+
+                // サーバーソケット初期化
+                server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                IPEndPoint ipEndPoint = new IPEndPoint(address, port);
+                if (ipEndPoint == null)
+                {
+                    return;
+                }
+                server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, 1);
+                server.Bind(ipEndPoint);
+                server.Listen(5);
+
+                _ctrlForm = ctrlForm;
+
+                state = true;
+
+                thread1 = new Thread(Start);
+                thread1.Start();
+            }
+            catch (Exception Ex)
+            {
+                ExceptionLogger.ExceptionLogger.errorLog(Ex);
+                return;
+            }
+        }
+
         public void  Start()
         {
             // 要求待ち
@@ -52,7 +86,7 @@ namespace HttpServer
                 {
                     Socket client = server.Accept();
 
-                    Response response = new Response(client, Environment.CurrentDirectory + @"\Html\index.html", true, _ctrlForm);
+                    Response response = new Response(client, DefaultHtml, true, _ctrlForm);
                     response.Start();
                 }
         }

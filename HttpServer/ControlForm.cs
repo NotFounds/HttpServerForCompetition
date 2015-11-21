@@ -32,9 +32,8 @@ namespace HttpServer
         private void Form1_Load(object sender, EventArgs e)
         {
             ColorSet(0);
+            textBox3.Text = Environment.CurrentDirectory + @"\Html\index.html";
             Init();
-
-            //Submissions.ShareSubmissions = new Submissions();
         }
 
         private void Init()
@@ -119,10 +118,17 @@ namespace HttpServer
                 }
             }
 
-            WriteLineLog(String.Format("IPv4    : {0},     Port : {1}", ip.ToString(), port.ToString()), LogColor.SystemColor);
-            WriteLineLog(String.Format("Address : http://{0}:{1}/\n", ip.ToString(), port.ToString()), LogColor.SystemColor);
+            WriteLineLog(string.Format("IPv4    : {0},     Port : {1}", ip.ToString(), port.ToString()), LogColor.SystemColor);
+            WriteLineLog(string.Format("Address : http://{0}:{1}/\n", ip.ToString(), port.ToString()), LogColor.SystemColor);
 
-            server =  new HttpServer(ip, port, this);
+            if (textBox3.Text != "")
+            {
+                server = new HttpServer(ip, port, textBox3.Text + @"\index.txt", this);
+            }
+            else
+            {
+                server = new HttpServer(ip, port, this);
+            }
 
             // textbox無効化
             textBox1.Enabled = false;
@@ -132,6 +138,10 @@ namespace HttpServer
 
             // conteStstartButtonの有効化
             button2.Enabled = true;
+
+            // Htmlフォルダの変更不可
+            textBox3.Enabled = false;
+            button5.Enabled = false;
         }
 
         // コンテストスタート
@@ -330,5 +340,13 @@ namespace HttpServer
             Environment.Exit(0);
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            {
+                fbd.ShowDialog();
+                textBox3.Text = fbd.SelectedPath;
+            }
+        }
     }
 }
