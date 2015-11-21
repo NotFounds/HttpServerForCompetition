@@ -1,6 +1,6 @@
 # HttpServerForCompetition
 + This Program is written by C# and Html, js, css...
-+ You can make a simple competition server.
++ You can make a simple competition server in LAN.
 
 # Feature
 + Port Setting
